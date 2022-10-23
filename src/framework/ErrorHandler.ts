@@ -1,20 +1,20 @@
 import { SourceMapConsumer } from "source-map"
 
 export class ErrorHandler {
+  // Cache previously mapped traces to improve performance
+  public static cache: { [key: string]: string } = {}
+
   // Cache consumer
   private static _consumer?: SourceMapConsumer
 
   public static get consumer(): SourceMapConsumer {
     if (this._consumer == null) {
-      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      // eslint-disable-next-line @typescript-eslint/no-var-requires,@typescript-eslint/no-unsafe-argument
       this._consumer = new SourceMapConsumer(require("main.js.map"))
     }
 
     return this._consumer
   }
-
-  // Cache previously mapped traces to improve performance
-  public static cache: { [key: string]: string } = {}
 
   /**
    * Generates a stack trace using a source map generate original symbol names.

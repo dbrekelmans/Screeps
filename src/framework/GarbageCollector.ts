@@ -1,5 +1,7 @@
-import { Logger } from "utils/logger/Logger"
+import { Logger } from "framework/logger/Logger"
+import { injectable } from "tsyringe"
 
+@injectable()
 export class GarbageCollector {
   constructor(private readonly memory: Memory, private readonly game: Game, private readonly logger: Logger) {}
 

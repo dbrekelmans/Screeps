@@ -1,5 +1,5 @@
-import { Logger, LogLevel } from "utils/logger/Logger"
-import { LoggerOptions } from "utils/logger/LoggerFactory"
+import { Logger, LogLevel } from "framework/logger/Logger"
+import { LoggerOptions } from "framework/logger/LoggerFactory"
 
 export class ConsoleLogger implements Logger {
   private readonly channel: string
@@ -10,7 +10,7 @@ export class ConsoleLogger implements Logger {
     this.minLevel = options?.minLevel ?? LogLevel.DEBUG
   }
 
-  log(logLevel: LogLevel, message: string, context?: Record<string, unknown>): void {
+  public log(logLevel: LogLevel, message: string, context?: Record<string, unknown>): void {
     if (logLevel.valueOf() < this.minLevel.valueOf()) {
       return
     }
@@ -22,27 +22,27 @@ export class ConsoleLogger implements Logger {
     )
   }
 
-  debug(message: string, context?: Record<string, unknown>): void {
+  public debug(message: string, context?: Record<string, unknown>): void {
     this.log(LogLevel.DEBUG, message, context)
   }
 
-  info(message: string, context?: Record<string, unknown>): void {
+  public info(message: string, context?: Record<string, unknown>): void {
     this.log(LogLevel.INFO, message, context)
   }
 
-  notice(message: string, context?: Record<string, unknown>): void {
+  public notice(message: string, context?: Record<string, unknown>): void {
     this.log(LogLevel.NOTICE, message, context)
   }
 
-  warning(message: string, context?: Record<string, unknown>): void {
+  public warning(message: string, context?: Record<string, unknown>): void {
     this.log(LogLevel.WARNING, message, context)
   }
 
-  error(message: string, context?: Record<string, unknown>): void {
+  public error(message: string, context?: Record<string, unknown>): void {
     this.log(LogLevel.ERROR, message, context)
   }
 
-  critical(message: string, context?: Record<string, unknown>): void {
+  public critical(message: string, context?: Record<string, unknown>): void {
     this.log(LogLevel.CRITICAL, message, context)
   }
 }

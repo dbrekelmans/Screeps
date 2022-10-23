@@ -1,4 +1,4 @@
-import { Logger, LogLevel } from "utils/logger/Logger"
+import { Logger, LogLevel } from "framework/logger/Logger"
 
 export type LoggerOptions = {
   channel?: string

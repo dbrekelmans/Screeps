@@ -1,6 +1,5 @@
-import { ErrorHandler } from "utils/ErrorHandler"
-import { ConsoleLoggerFactory } from "utils/logger/ConsoleLoggerFactory"
-import { GarbageCollector } from "utils/GarbageCollector"
+import "reflect-metadata"
+import { Environment, Kernel } from "framework/Kernel"
 
 // declare global {
 //   /*
@@ -24,28 +23,6 @@ import { GarbageCollector } from "utils/GarbageCollector"
 //   }
 // }
 
-export const loop = ErrorHandler.call(() => {
-  const loggerFactory = new ConsoleLoggerFactory()
-  const logger = loggerFactory.create()
+const kernel = new Kernel(Environment.DEVELOPMENT)
 
-  logger.notice(`Current game tick is ${Game.time}`)
-  Game.spawns["StartSpawn"].spawnCreep([WORK, MOVE, CARRY, MOVE], "Creep1")
-  const creep = Game.creeps["Creep1"]
-
-  if (creep.store.energy === 0) {
-    const source = creep.room.find(FIND_SOURCES)[0]
-
-    creep.moveTo(source)
-    creep.harvest(source)
-  } else {
-    const controller = creep.room.controller
-
-    if (controller !== undefined) {
-      creep.moveTo(controller)
-      creep.upgradeController(controller)
-    }
-  }
-
-  const garbageCollectorLogger = loggerFactory.create({ channel: "garbage-collector" })
-  new GarbageCollector(Memory, Game, garbageCollectorLogger).collect()
-})
+export const loop = (): void => kernel.run()
