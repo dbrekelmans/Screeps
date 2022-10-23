@@ -2,7 +2,7 @@
 
 import clear from "rollup-plugin-clear";
 import commonjs from "@rollup/plugin-commonjs";
-import resolve from "@rollup/plugin-node-resolve";
+import nodeResolve from "@rollup/plugin-node-resolve";
 import screeps from "rollup-plugin-screeps";
 import typescript from "rollup-plugin-typescript2";
 
@@ -24,9 +24,9 @@ export default {
 
   plugins: [
     clear({ targets: ["dist"] }),
-    resolve({ rootDir: "src" }),
+    nodeResolve({ rootDir: "src" }),
     commonjs(),
-    typescript({ tsconfig: "./tsconfig.json" }),
+    typescript(),
     screeps({ config: cfg, dryRun: cfg == null })
   ]
 };

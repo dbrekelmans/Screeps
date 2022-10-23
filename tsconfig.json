@@ -1,18 +1,30 @@
 {
   "compilerOptions": {
-    "module": "esnext",
-    "lib": ["es2018"],
+    "module": "es6",
     "target": "es2018",
-    "moduleResolution": "Node",
+    "moduleResolution": "node",
     "outDir": "dist",
     "baseUrl": "src/",
     "sourceMap": true,
     "strict": true,
     "experimentalDecorators": true,
-    "noImplicitReturns": true,
     "allowSyntheticDefaultImports": true,
-    "allowUnreachableCode": false
+    "allowUnreachableCode": false,
+    "allowUnusedLabels": false,
+    "alwaysStrict": true,
+    "exactOptionalPropertyTypes": false,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitAny": true,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true
   },
+  "include": [
+    "src"
+  ],
   "exclude": [
     "node_modules"
   ]
