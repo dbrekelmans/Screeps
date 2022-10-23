@@ -6,18 +6,11 @@ import { Brain } from "brain/Brain"
 import { Logger, LogLevel } from "framework/logger/Logger"
 import { LoggerFactory } from "framework/logger/LoggerFactory"
 import { ConsoleLoggerFactory } from "framework/logger/ConsoleLoggerFactory"
+import { IDENTIFIER } from "framework/dependency-injection/FrameworkInjectionTokens"
 
 export enum Environment {
   DEVELOPMENT,
   PRODUCTION,
-}
-
-export const FRAMEWORK = {
-  game: Symbol("game"),
-  memory: Symbol("memory"),
-  environment: Symbol("environment"),
-  loggerFactory: Symbol("logger-factory"),
-  logger: Symbol("logger"),
 }
 
 export class Kernel {
@@ -26,34 +19,34 @@ export class Kernel {
   constructor(environment: Environment) {
     this.container = container
 
-    this.container.register(FRAMEWORK.game, { useValue: Game })
-    this.container.register(FRAMEWORK.memory, { useValue: Memory })
-    this.container.register(FRAMEWORK.environment, { useValue: environment })
-    this.container.register<LoggerFactory>(FRAMEWORK.loggerFactory, { useClass: ConsoleLoggerFactory })
-    this.container.register<Logger>(FRAMEWORK.logger, {
+    this.container.register(IDENTIFIER.game, { useValue: Game })
+    this.container.register(IDENTIFIER.memory, { useValue: Memory })
+    this.container.register(IDENTIFIER.environment, { useValue: environment })
+    this.container.register<LoggerFactory>(IDENTIFIER.loggerFactory, { useClass: ConsoleLoggerFactory })
+    this.container.register<Logger>("logger", {
       useFactory: (container) => {
-        const environment = container.resolve(FRAMEWORK.environment)
+        const environment = container.resolve(IDENTIFIER.environment)
         return container
-          .resolve<LoggerFactory>(FRAMEWORK.loggerFactory)
+          .resolve<LoggerFactory>(IDENTIFIER.loggerFactory)
           .create({ minLevel: environment === Environment.PRODUCTION ? LogLevel.WARNING : LogLevel.DEBUG })
       },
     })
     this.container.register(GarbageCollector, {
       useFactory: (container) => {
-        const environment = container.resolve(FRAMEWORK.environment)
-        const logger = container.resolve<LoggerFactory>(FRAMEWORK.loggerFactory).create({
+        const environment = container.resolve(IDENTIFIER.environment)
+        const logger = container.resolve<LoggerFactory>(IDENTIFIER.loggerFactory).create({
           channel: "garbage-collector",
           minLevel: environment === Environment.PRODUCTION ? LogLevel.WARNING : LogLevel.DEBUG,
         })
 
-        return new GarbageCollector(container.resolve(FRAMEWORK.memory), container.resolve(FRAMEWORK.game), logger)
+        return new GarbageCollector(container.resolve(IDENTIFIER.memory), container.resolve(IDENTIFIER.game), logger)
       },
     })
   }
 
   public run(): void {
     const brain = this.container.resolve(Brain)
-    const environment = this.container.resolve(FRAMEWORK.environment)
+    const environment = this.container.resolve(IDENTIFIER.environment)
 
     if (environment === Environment.PRODUCTION) {
       brain.tick()

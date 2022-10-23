@@ -1,9 +1,10 @@
 import { Logger } from "framework/logger/Logger"
-import { injectable } from "tsyringe"
+import { inject, injectable } from "tsyringe"
+import { IDENTIFIER } from "framework/dependency-injection/FrameworkInjectionTokens"
 
 @injectable()
 export class Brain {
-  constructor(private readonly logger: Logger) {}
+  constructor(@inject(IDENTIFIER.logger) private readonly logger: Logger) {}
 
   public tick(): void {
     this.logger.notice(`Current game tick is ${Game.time}`)
